@@ -1,4 +1,3 @@
-package hello;
 
 import io.undertow.Undertow;
 import io.undertow.util.HeaderMap;

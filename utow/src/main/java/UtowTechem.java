@@ -1,4 +1,3 @@
-package hello;
 
 import io.undertow.Handlers;
 import io.undertow.Undertow;
