@@ -10,6 +10,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 // 9097
+// mvn clean package dependency:copy-dependencies -DoutputDirectory=target
+// java -cp "target/*" UtowAsync
+
 
 public final class UtowAsync implements HttpHandler {
 
