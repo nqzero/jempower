@@ -1,0 +1,35 @@
+configurations {
+    quasar
+}
+
+dependencies {
+
+}
+
+dependencies {
+    compile "co.paralleluniverse:quasar-core:$quasarVer"
+    compile "co.paralleluniverse:comsat-servlet:$comsatVer"
+    compile "co.paralleluniverse:comsat-jdbc:$comsatVer"
+    compile "org.eclipse.jetty.websocket:javax-websocket-server-impl:$jettyVer"
+    compile "org.apache.derby:derby:$derbyVer"
+
+    compile project(':test-servlet')
+    compile project(':comsat-examples-servlet')
+    
+    quasar  "co.paralleluniverse:quasar-core:$quasarVer"
+}
+
+run {
+    if (project.hasProperty('mainClass') && mainClass != '')
+        main = mainClass
+    else
+        main = 'co.paralleluniverse.examples.comsatjetty.SimpleFiberServlets'
+    standardInput = System.in
+    jvmArgs "-javaagent:${configurations.quasar.iterator().next()}" // =v, =d
+    jvmArgs "-ea"
+    // systemProperty 'co.paralleluniverse.fibers.verifyInstrumentation', 'true'
+}
+
+defaultTasks 'run'
+mainClassName='co.paralleluniverse.examples.comsatjetty.SimpleFiberServlets'
+
