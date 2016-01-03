@@ -1,30 +1,38 @@
-package hello;
-
-import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.eclipse.jetty.server.handler.AbstractHandlerContainer;
 
+import org.eclipse.jetty.http.HttpField;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.MimeTypes;
+import org.eclipse.jetty.http.PreEncodedHttpField;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.util.BufferUtil;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+
+// 9090
+// simplified by srl based on the techem
+// performance appears to be identical
+// 91k-ish req/s
 
 /**
  * An implementation of the TechEmpower benchmark tests using the Jetty web
  * server.  
  */
-public final class HelloWebServer 
+public final class JettyTechem 
 {
     public static void main(String[] args) throws Exception
     {
-        Server server = new Server(8080);
+        Server server = new Server(9090);
         ServerConnector connector = server.getBean(ServerConnector.class);
         HttpConfiguration config = connector.getBean(HttpConnectionFactory.class).getHttpConfiguration();
         config.setSendDateHeader(true);
@@ -39,30 +47,16 @@ public final class HelloWebServer
     
     public static class PathHandler extends AbstractHandler
     {
-        JsonHandler _jsonHandler=new JsonHandler();
-        PlainTextHandler _plainHandler=new PlainTextHandler();
-        
-        public PathHandler()
-        {
-            addBean(_jsonHandler);
-            addBean(_plainHandler);
-        }
-
-        @Override
-        public void setServer(Server server)
-        {
-            super.setServer(server);
-            _jsonHandler.setServer(server);
-            _plainHandler.setServer(server);
-        }
+        ByteBuffer helloWorld = BufferUtil.toBuffer("Hello, World!");
+        HttpField contentType = new PreEncodedHttpField(HttpHeader.CONTENT_TYPE,MimeTypes.Type.TEXT_PLAIN.asString());
 
         @Override
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
         {
-            if ("/plaintext".equals(target))
-                _plainHandler.handle(target,baseRequest,request,response);
-            else if ("/json".equals(target))
-                _jsonHandler.handle(target,baseRequest,request,response);
+            baseRequest.setHandled(true);
+            baseRequest.getResponse().getHttpFields().add(contentType); 
+            if ("/hello".equals(target))
+                baseRequest.getResponse().getHttpOutput().sendContent(helloWorld.slice());
         }
         
     }
