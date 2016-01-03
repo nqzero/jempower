@@ -7,11 +7,11 @@
     <groupId>com.techempower</groupId>
     <artifactId>undertow-example</artifactId>
     <version>0.1</version>
-     <properties>
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
-        <!-- Web server -->
         <dependency>
             <groupId>io.undertow</groupId>
             <artifactId>undertow-core</artifactId>
