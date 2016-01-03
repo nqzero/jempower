@@ -9,22 +9,11 @@
     <name>Spark Test project</name>
     <version>0.1</version>
 
-
-    <prerequisites>
-        <maven>3.0.0</maven>
-    </prerequisites>
-
     <dependencies>
         <dependency>
             <groupId>com.sparkjava</groupId>
             <artifactId>spark-core</artifactId>
             <version>2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
     
