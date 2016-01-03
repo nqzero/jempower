@@ -14,6 +14,10 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 
+// mvn clean package dependency:copy-dependencies -DoutputDirectory=target
+// java -cp "target/*" -javaagent:target/quasar-core-0.7.2-jdk8.jar ComsatJetty
+
+
 // 9096
 // duplicate for easy running
 
