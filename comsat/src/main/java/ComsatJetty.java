@@ -1,6 +1,5 @@
 
 
-import co.paralleluniverse.examples.comsatjetty.*;
 import co.paralleluniverse.fibers.SuspendExecution;
 import co.paralleluniverse.fibers.Suspendable;
 import co.paralleluniverse.fibers.servlet.FiberHttpServlet;
