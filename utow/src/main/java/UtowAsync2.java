@@ -10,16 +10,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 // 9097
-// mvn clean package dependency:copy-dependencies -DoutputDirectory=target
-// java -cp "target/*" UtowAsync
 
-
-public final class UtowAsync implements HttpHandler {
+public final class UtowAsync2 implements HttpHandler {
 
   public static void main(String[] args) throws Exception {
     Undertow.builder()
-        .addHttpListener(9097,"0.0.0.0")
-        .setHandler(Handlers.path().addPrefixPath("/hello",new UtowAsync()))
+        .addHttpListener(9098,"0.0.0.0")
+        .setHandler(Handlers.path().addPrefixPath("/hello",new UtowAsync2()))
         .build()
         .start();
   }
@@ -33,31 +30,41 @@ public final class UtowAsync implements HttpHandler {
     int num = 0;
     HttpServerExchange acv[] = new HttpServerExchange[100000];
 
+    synchronized HttpServerExchange [] wrap() {
+        HttpServerExchange [] a2 = new HttpServerExchange[num];
+        System.arraycopy(acv,0,a2,0,num);
+        num = 0;
+        return a2;
+    }
     synchronized void store(HttpServerExchange async) {
-        if (async==null) while (num > 0) {
-            reply(acv[--num]);
-            acv[num] = null;
-        }
-        else acv[num++] = async;
+        acv[num++] = async;
     }
 
     byte [] bytes = "hello world".getBytes();
     ByteBuffer buf = ByteBuffer.allocate(bytes.length).put(bytes);
     { buf.flip(); }
     
-    void reply(HttpServerExchange exchange) {
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
-        exchange.getResponseSender().send(buf.duplicate());
-    }
     
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
         store(exchange);
         exchange.dispatch();
     }
+
+    void reply(HttpServerExchange exchange) {
+        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+        exchange.getResponseSender().send(buf.duplicate());
+    }
+    void reply() {
+        HttpServerExchange [] wrap = wrap();
+        for (HttpServerExchange exchange : wrap)
+            reply(exchange);
+    }
     
     {
-        new Timer().schedule(new TimerTask() { public void run() {
-            UtowAsync.this.store(null);
-        } },10,10);
+        int delta = 1, nt = 3;
+        for (int ii=0; ii < nt; ii++)
+            new Timer().schedule(new TimerTask() { public void run() {
+                UtowAsync2.this.reply();
+            } },delta,delta);
     }
 }
