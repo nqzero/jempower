@@ -25,7 +25,7 @@ public class ComsatJetty {
     
     public static String doSleep() throws SuspendExecution {
         try {
-            if (false) Strand.sleep(1);
+            Strand.sleep(1);
             return "hello world";
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
@@ -51,10 +51,6 @@ public class ComsatJetty {
             }
         }), "/hello");
         server.start();
-        System.out.println("http://localhost:9096/hello");
-        System.out.println("Jetty started. Hit enter to stop it...");
-        System.in.read();
-        server.stop();
     }
 
 }
