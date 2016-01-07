@@ -5,6 +5,7 @@ import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
 import io.undertow.util.Headers;
 import java.nio.ByteBuffer;
+import io.undertow.util.SameThreadExecutor;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,8 +47,7 @@ public final class UtowAsync2 implements HttpHandler {
     
     
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
-        store(exchange);
-        exchange.dispatch();
+        exchange.dispatch(SameThreadExecutor.INSTANCE, () -> store(exchange));
     }
 
     void reply(HttpServerExchange exchange) {
