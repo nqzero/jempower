@@ -3,7 +3,7 @@
 svn co https://github.com/kilim/kilim/branches/asm5-jdk8 lib
 
 cd lib;
-ant weave jar
+ant clean weave jar
 mkdir c2
 find examples bench -name "*.java" | xargs javac -cp kilim.jar:libs/\* -d ./c2
 java -cp c2:kilim.jar:libs/\* kilim.tools.Weaver -d c2 c2
