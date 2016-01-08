@@ -22,10 +22,13 @@ import org.eclipse.jetty.servlet.ServletHolder;
 // duplicate for easy running
 
 public class ComsatJetty {
+    private static int delay = 0;
+
+    
     
     public static String doSleep() throws SuspendExecution {
         try {
-            Strand.sleep(1);
+            if (delay > 0) Strand.sleep(delay);
             return "hello world";
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
@@ -33,6 +36,7 @@ public class ComsatJetty {
     }
 
     public static void main(String[] args) throws Exception {
+        if (args.length > 0) delay = Integer.valueOf(args[0]);
         final Server server = new Server(9096);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         server.setHandler(context);
