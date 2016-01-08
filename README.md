@@ -16,8 +16,22 @@ comsat requires a javaagent to modify the bytecode
 `java -cp "target/*" -javaagent:target/quasar-core-0.7.2-jdk8.jar ComsatJetty`
 
 
+##### "ulimit -n" tools
+the tools directory is useful for starting, stopping and testing the servers at high concurrency.
+by default, ubuntu makes setting "ulimit -n" hard.
+add it to your path, then:
+```
+judo.sh   utow/target          UtowAsync    &
+ulim.sh ab -r -k -c 4000 -n 1000000 localhost:9097/hello
+jkill.sh
+```
+
+NB: `jkill.sh` will kill the process group associated with '__judo_helper.sh'.
+i'm not aware of any other user of this name, but it's possible. buyer beware
+
+
 ##### everything
-````
+```
 for ii in comsat jetty spark utow; do
   (cd $ii; mvn clean package dependency:copy-dependencies -DoutputDirectory=target)
 done
@@ -33,7 +47,11 @@ judo.sh   utow/target          UtowTechem   &    # 9095
 judo.sh comsat/target  $QUASAR ComsatJetty  &    # 9096
 judo.sh   utow/target          UtowAsync    &    # 9097
 judo.sh   utow/target          UtowAsync2   &    # 9098
+
+# kill all the servers
+jkill.sh
 ```
+ctrl-c will also kill a server if it's in the foreground
 
 
 ##### other stuff
