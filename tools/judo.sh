@@ -1,9 +1,9 @@
 #!/bin/bash
 
-cp=$1
+export cp=$1
 shift 1
-cmd="$@"
-user=$(whoami)
+export cmd="$@"
+export user=$(whoami)
+myjudo=$(which judo4.sh)
 
-
-sudo bash -c "ulimit -n 102400; su $user -mc '$JAVA_HOME/bin/java -cp $cp/\* -Xmx1G $cmd > /dev/null 2>&1'"
+sudo -E bash -c "ulimit -n 102400; su $user -mc '$myjudo'"
