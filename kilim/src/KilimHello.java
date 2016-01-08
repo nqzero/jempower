@@ -1,4 +1,3 @@
-package tools;
 
 import java.io.EOFException;
 import java.io.IOException;

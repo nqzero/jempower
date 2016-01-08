@@ -15,6 +15,8 @@ java -cp "target/*" UtowAsync
 comsat requires a javaagent to modify the bytecode
 `java -cp "target/*" -javaagent:target/quasar-core-0.7.2-jdk8.jar ComsatJetty`
 
+##### build kilim
+`(cd kilim; ./build.sh)`
 
 ##### "ulimit -n" tools
 the tools directory is useful for starting, stopping and testing the servers at high concurrency.
@@ -35,6 +37,7 @@ i'm not aware of any other user of this name, but it's possible. buyer beware
 for ii in comsat jetty spark utow; do
   (cd $ii; mvn clean package dependency:copy-dependencies -DoutputDirectory=target)
 done
+(cd kilim; ./build.sh)
 
 QUASAR="-javaagent:comsat/target/quasar-core-0.7.2-jdk8.jar"
 PATH=$PWD/tools:$PATH
@@ -43,6 +46,7 @@ PATH=$PWD/tools:$PATH
 judo.sh  spark/target          SparkHello   &    # 4567
 judo.sh  jetty/target          JettyTechem  &    # 9090
 judo.sh  jetty/target          JettyAsync   &    # 9091
+judo.sh  kilim/target          KilimHello   &    # 9093
 judo.sh   utow/target          UtowTechem   &    # 9095
 judo.sh comsat/target  $QUASAR ComsatJetty  &    # 9096
 judo.sh   utow/target          UtowAsync    &    # 9097
@@ -71,7 +75,5 @@ jempower.nb is a netbeans project just to simplify editing the files.
 prolly shouldn't have been added, but at this point, easier to just leave it be
 
 
-##### todo
-kilim is another fiber library which includes a web server - need to add a script for building KilimHello
 
 
