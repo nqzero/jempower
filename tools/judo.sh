@@ -13,6 +13,11 @@ export cmd="$@"
 export user=$(whoami)
 
 # use a helper script to make it easier to find/kill running processes
-myjudo=$(which __judo_helper.sh)
+helper="__judo_helper.sh"
+myjudo=$(which $helper)
 
-sudo -E bash -c "ulimit -n 102400; su $user -mc '$myjudo'"
+if [ -z "$myjudo" ]; then
+    echo "helper was not found on the path: $helper";
+else
+    sudo -E bash -c "ulimit -n 102400; su $user -mc '$myjudo'"
+fi
