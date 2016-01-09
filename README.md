@@ -39,16 +39,16 @@ for ii in comsat jetty spark utow; do
 done
 (cd kilim; ./build.sh)
 
-QUASAR="-javaagent:comsat/target/quasar-core-0.7.2-jdk8.jar"
+QUASAR="-javaagent:$PWD/comsat/target/quasar-core-0.7.2-jdk8.jar"
 PATH=$PWD/tools:$PATH
 
 
 judo.sh  spark/target          SparkHello   &    # 4567
 judo.sh  jetty/target          JettyTechem  &    # 9090
 judo.sh  jetty/target          JettyAsync   &    # 9091
-judo.sh  kilim/target          KilimHello   &    # 9093
+judo.sh  kilim/target          KilimHello  1&    # 9093
 judo.sh   utow/target          UtowTechem   &    # 9095
-judo.sh comsat/target  $QUASAR ComsatJetty  &    # 9096
+judo.sh comsat/target  $QUASAR ComsatJetty 1&    # 9096
 judo.sh   utow/target          UtowAsync    &    # 9097
 judo.sh   utow/target          UtowAsync2   &    # 9098
 
