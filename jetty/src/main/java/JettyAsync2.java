@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.concurrent.LinkedBlockingQueue;
 import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.MimeTypes;
@@ -23,14 +25,25 @@ import org.eclipse.jetty.util.BufferUtil;
 
 public class JettyAsync2 extends AbstractHandler {
     int num = 0;
-    AsyncContext acv[] = new AsyncContext[1000000];
+    AsyncContext [] ac1=new AsyncContext[100000], ac2=new AsyncContext[100000],
+            acv=ac1, copy=ac2;
     ByteBuffer helloWorld = BufferUtil.toBuffer("hello world");
     HttpField contentType = new PreEncodedHttpField(HttpHeader.CONTENT_TYPE,MimeTypes.Type.TEXT_PLAIN.asString());
+    LinkedBlockingQueue<AsyncContext []> q = new LinkedBlockingQueue<>();
 
-    synchronized AsyncContext [] wrap() {
-        AsyncContext [] a2 = new AsyncContext[num];
-        System.arraycopy(acv,0,a2,0,num);
+    synchronized int swap() {
+        int n2 = num;
+        copy = acv;
+        acv = (acv==ac1) ? ac2:ac1;
         num = 0;
+        return n2;
+    }
+    
+    AsyncContext [] wrap() {
+        int n2 = swap();
+        AsyncContext a2[]=new AsyncContext[n2];
+        System.arraycopy(copy,0,a2,0,n2);
+        Arrays.fill(copy,0,n2,null);
         return a2;
     }
     
@@ -56,23 +69,35 @@ public class JettyAsync2 extends AbstractHandler {
             async.complete();
         } catch (IOException ex) {}
     }
-    void reply() {
-        for (AsyncContext async : wrap())
-            reply(async);
+    void reply(AsyncContext [] wrap) {
+        for (int ii=0; ii<wrap.length; ii++)
+            reply(wrap[ii]);
     }
+    void reply() {
+        AsyncContext [] wrap = wrap();
+        if (wrap.length==0 || q.add(wrap)) return;
+        reply(wrap);
+    }
+    void poll() {
+        try { reply(q.take()); }
+        catch (Exception ex) {}
+    }
+
+    void timers() {
+        int delta = 10, nt = 3;
+        new Timer().schedule(new TimerTask() { public void run() {
+            reply();
+        } },delta,delta);
+        
+        for (int ii=0; ii<nt; ii++)
+            new Thread(()-> { while (true) poll(); }).start();
+    }
+    { timers(); }
     
     public static void main(String[] args) throws Exception {
-        JettyAsync2 rest = new JettyAsync2();
-        
         Server server = new Server(9092);
-        server.setHandler(rest);
+        server.setHandler(new JettyAsync2());
         server.start();
-
-        int delta = 1, nt = 3;
-        for (int ii=0; ii < nt; ii++)
-            new Timer().schedule(new TimerTask() { public void run() {
-                rest.reply();
-            } },delta,delta);
     }
 
 }
