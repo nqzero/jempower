@@ -27,6 +27,14 @@ judo.sh   utow/target          UtowAsync    &
 ulim.sh ab -r -k -c 4000 -n 1000000 localhost:9097/hello
 jkill.sh
 ```
+another way to run the same server is
+`ulim.sh $JAVA_HOME/bin/java -cp 'utow/target/\*' -Xmx1G UtowAsync`
+
+command | description
+-------|-------
+`judo.sh` | ulimit -n wrapper for java $1/* $@
+`jkill.sh` | kill -2 all the servers started with `judo.sh`
+`ulim.sh` | ulimit -n wrapper for arbitrary commands (need to escape globs)
 
 NB: `jkill.sh` will kill the process group associated with '__judo_helper.sh'.
 i'm not aware of any other user of this name, but it's possible. buyer beware
@@ -74,7 +82,5 @@ and more help here: http://gwan.com/en_apachebench_httperf.html
 
 jempower.nb is a netbeans project just to simplify editing the files.
 prolly shouldn't have been added, but at this point, easier to just leave it be
-
-
 
 
