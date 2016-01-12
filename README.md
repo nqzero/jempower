@@ -46,6 +46,7 @@ PATH=$PWD/tools:$PATH
 judo.sh  spark/target          SparkHello   &    # 4567
 judo.sh  jetty/target          JettyTechem  &    # 9090
 judo.sh  jetty/target          JettyAsync   &    # 9091
+judo.sh  jetty/target          JettyAsync2  &    # 9092
 judo.sh  kilim/target          KilimHello  1&    # 9093
 judo.sh   utow/target          UtowTechem   &    # 9095
 judo.sh comsat/target  $QUASAR ComsatJetty 1&    # 9096

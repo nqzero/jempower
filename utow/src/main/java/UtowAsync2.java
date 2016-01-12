@@ -29,7 +29,7 @@ public final class UtowAsync2 implements HttpHandler {
 // fast-flip 90k req/s
 
     int num = 0;
-    HttpServerExchange acv[] = new HttpServerExchange[100000];
+    HttpServerExchange acv[] = new HttpServerExchange[1000000];
 
     synchronized HttpServerExchange [] wrap() {
         HttpServerExchange [] a2 = new HttpServerExchange[num];
@@ -61,10 +61,10 @@ public final class UtowAsync2 implements HttpHandler {
     }
     
     {
-        int delta = 1, nt = 3;
+        int delta = 5, nt = 3;
         for (int ii=0; ii < nt; ii++)
             new Timer().schedule(new TimerTask() { public void run() {
-                UtowAsync2.this.reply();
+                reply();
             } },delta,delta);
     }
 }

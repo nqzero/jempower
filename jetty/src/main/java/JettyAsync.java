@@ -13,8 +13,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 
-// 9091 async
-// 9092 not async
+// 9091
+// async by default, any cmd-line-arg for not async
 
 public class JettyAsync extends HttpServlet
 {
@@ -22,7 +22,7 @@ public class JettyAsync extends HttpServlet
     final boolean useasync;
 
     int num = 0;
-    AsyncContext acv[] = new AsyncContext[10000];
+    AsyncContext acv[] = new AsyncContext[1000000];
 
     public JettyAsync(boolean async) {
         useasync = async;
@@ -54,7 +54,7 @@ public class JettyAsync extends HttpServlet
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println("hello world async jetty");
+        out.println("hello world");
         out.close();
     }
     
@@ -86,7 +86,7 @@ public class JettyAsync extends HttpServlet
     public static void main(String[] args) throws Exception
     {
         if (args.length==0) setup(9091,true);
-        else                setup(9092,false);
+        else                setup(9091,false);
     }
 
 }

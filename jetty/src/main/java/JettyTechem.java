@@ -47,7 +47,7 @@ public final class JettyTechem
     
     public static class PathHandler extends AbstractHandler
     {
-        ByteBuffer helloWorld = BufferUtil.toBuffer("Hello, World!");
+        ByteBuffer helloWorld = BufferUtil.toBuffer("hello world");
         HttpField contentType = new PreEncodedHttpField(HttpHeader.CONTENT_TYPE,MimeTypes.Type.TEXT_PLAIN.asString());
 
         @Override

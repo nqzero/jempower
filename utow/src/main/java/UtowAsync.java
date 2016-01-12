@@ -32,7 +32,7 @@ public final class UtowAsync implements HttpHandler {
 // fast-flip 90k req/s
 
     int num = 0;
-    HttpServerExchange acv[] = new HttpServerExchange[100000];
+    HttpServerExchange acv[] = new HttpServerExchange[1000000];
 
     synchronized void store(HttpServerExchange async) {
         if (async==null) while (num > 0) {

@@ -24,7 +24,7 @@ public class UtowBayou
                 //headers.add(Headers.DATE, "Mon, 28 Jul 2014 05:27:28 GMT");
                 headers.add(Headers.SERVER, "undertow");
 
-                exchange.getResponseSender().send("HelloWorld");
+                exchange.getResponseSender().send("hello world");
             }).build();
         server.start();
     }

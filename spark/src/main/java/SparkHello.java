@@ -6,7 +6,7 @@ import static spark.Spark.*;
 public class SparkHello {
     public static void main(String[] args) {
         get("/hello", (request, response) -> {
-            return "Hello World!";
+            return "hello world";
         });
     }
 }
