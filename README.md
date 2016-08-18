@@ -15,9 +15,6 @@ java -cp "target/*" UtowAsync
 comsat requires a javaagent to modify the bytecode
 `java -cp "target/*" -javaagent:target/quasar-core-0.7.2-jdk8.jar ComsatJetty`
 
-##### build kilim
-`(cd kilim; ./build.sh)`
-
 ##### "ulimit -n" tools
 the tools directory is useful for starting, stopping and testing the servers at high concurrency.
 by default, ubuntu makes setting "ulimit -n" hard.
@@ -33,19 +30,17 @@ another way to run the same server is
 command | description
 -------|-------
 `judo.sh` | ulimit -n wrapper for java $1/* $@
-`jkill.sh` | kill -2 all the servers started with `judo.sh`
+`jkill.sh` | kill -TERM all the servers started with `judo.sh`
 `ulim.sh` | ulimit -n wrapper for arbitrary commands (need to escape globs)
 
 NB: `jkill.sh` will kill the process group associated with '__judo_helper.sh'.
 i'm not aware of any other user of this name, but it's possible. buyer beware
 
-
 ##### everything
 ```
-for ii in comsat jetty spark utow; do
+for ii in kilim comsat jetty spark utow; do
   (cd $ii; mvn clean package dependency:copy-dependencies -DoutputDirectory=target)
 done
-(cd kilim; ./build.sh)
 
 QUASAR="-javaagent:$PWD/comsat/target/quasar-core-0.7.2-jdk8.jar"
 PATH=$PWD/tools:$PATH

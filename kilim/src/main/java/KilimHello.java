@@ -19,6 +19,7 @@ public class KilimHello extends HttpSession {
     private static int delay = 0;
     
     public static void main(String[] args) throws IOException {
+	if (kilim.tools.Kilim.trampoline(false,args)) return;
         if (args.length > 0) delay = Integer.valueOf(args[0]);
         new HttpServer(9093, KilimHello.class);
     }
