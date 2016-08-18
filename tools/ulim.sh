@@ -5,4 +5,5 @@ cmd="$@"
 
 user=$(whoami)
 
-sudo bash -c "ulimit -n 102400; su $user -mc '$cmd'"
+lim=102400
+sudo bash -c "ulimit -Hn $lim; su $user -mc 'ulimit -Sn \$(ulimit -Hn); $cmd'"
