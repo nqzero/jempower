@@ -5,9 +5,6 @@ import java.util.TimerTask;
 import javax.servlet.AsyncContext;
 
 
-// 9091 async
-// 9092 not async
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

@@ -6,8 +6,8 @@
 # googled, but didn't find anything approaching an explanation
 
 # only uses first 15 characters ...
-pids=$(pgrep __judo_helper.s)
+pids=$(pgrep -x judo.sh)
 
-for ii in $pids; do kill -TERM -$ii; done
+for ii in $pids; do kill -TERM $ii; done
 
 
