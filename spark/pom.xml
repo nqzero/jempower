@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>hello.world</groupId>
-    <artifactId>hello-spark</artifactId>
-    <name>Spark Test project</name>
-    <version>0.1</version>
+    <groupId>org.db4j</groupId>
+    <artifactId>jempower-spark</artifactId>
+    <name>Spark HTTP Test project</name>
+    <version>0.2</version>
 
     <dependencies>
         <dependency>
